@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request
+from flask import Flask, render_template, request, redirect
 
 app = Flask(__name__)
 
@@ -28,7 +28,54 @@ def mult():
                 
         return "<h1>El resultado es: {}</h1>".format(str(resultado))
     
-    
+@app.route("/calcular", methods=["GET", "POST"])
+def calcularValorAPagar(): #preguntar si la cantidad de compradores influye en la cantidad de boletos
+    resultado = "Error, no se ha calculado el precio"
+    #render_template("vista_cine.html", resultado = "", nombre = "")
+    if request.method == "POST":
+        nombre = request.form.get("nombre")
+        cantidadCompradores = int(request.form.get("cantidad_compradores"))
+        tarjeta = request.form.get("tarjeta")
+        cantidadBoletos = int(request.form.get("cantidad_boletos"))
+        
+        cantidadMax = cantidadCompradores * 7
+
+        if cantidadBoletos > cantidadMax:
+            resultado = "Error, no se pueden vender más de 7 boletos por persona"
+        else:
+            if cantidadBoletos > 5:
+                precioFinal = (cantidadBoletos * 12)
+                precioFinal = precioFinal - (precioFinal*0.15)
+            elif 3 <= cantidadBoletos <= 5:
+                precioFinal = (cantidadBoletos * 12)
+                precioFinal = precioFinal - (precioFinal*0.10)
+            else:
+                precioFinal = cantidadBoletos * 12
+
+            if tarjeta == "si":
+               # precioFinal *= 1.10
+                precioFinal = precioFinal - (precioFinal*0.10)
+            
+            resultado = str(precioFinal)
+            
+    return render_template("vista_cine.html",
+                           resultado=resultado,
+                           nombre=nombre,
+                           cantidadBoletos = str(cantidadBoletos),
+                           cantidadCompradores = str(cantidadCompradores),
+                           tarjeta = tarjeta)
+   #return "<h1>El resultado es: {}</h1>".format(str(resultado))
+
+
+@app.route("/home", methods=["GET", "POST"])
+def cinepolis():
+    return render_template("vista_cine.html",
+                           resultado="",
+                           nombre="",
+                           cantidadBoletos = "",
+                           cantidadCompradores = "",
+                           tarjeta = "")
+
 
 if __name__ == "__main__":
     app.run(debug=True)

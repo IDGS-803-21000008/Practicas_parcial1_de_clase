@@ -1,0 +1,50 @@
+{%extends 'layoutCine.html'%}
+
+{%block content%}
+<div class="row" style="margin: 20px;">
+  <div class="col-md-6 mt-5" style="background-color: white;">
+      <h3>Entradas</h3>
+      <form action="/calcular" method="POST">
+        <div class="form-group">
+          <label for="nombre">Nombre:</label>
+          <input type="text" class="form-control" id="nombre" value="{{nombre}}" name="nombre" placeholder="Ingrese su nombre" required>
+        </div>
+    
+        <div class="form-group">
+          <label for="cantidadCompradores">Cantidad de compradores:</label>
+          <input type="number" class="form-control" id="cantidadCompradores" value="{{cantidadCompradores}}" name="cantidad_compradores" placeholder="Ingrese la cantidad" pattern="^[0-9]+" required>
+        </div>
+    
+        <div class="form-group">
+          <label>¿Cuenta con tarjeta Cineco?</label><br>
+          <input type="radio" name="tarjeta" value="si"> Si<br>
+          <input type="radio" name="tarjeta" value="no"> No<br>
+        </div>
+    
+        <div class="form-group">
+          <label for="cantidadBoletos">Cantidad de boletos:</label>
+          <input type="number" class="form-control" id="cantidadBoletos" value="{{cantidadBoletos}}" name="cantidad_boletos" placeholder="Ingrese la cantidad" required>
+        </div>
+      
+  </div>
+  <div class="col-md-6 mt-5" style="background-color: white;">
+      <h3>Salidas</h3>
+      <label for="valor_pagar">Valor a pagar:</label><br>
+      <label>Nombre del cliente: {{nombre}}</label>
+      <input type="text" class="form-control" id="valor_pagar" value="${{ resultado }}" readonly>
+      <div class="row mt-5 ml-auto d-flex justify-content-center">
+        
+        <button type="submit" class="btn btn-primary mr-2">Procesar</button>
+      </form>
+        <form action="/home" method="POST">
+          <button type="submit" class="btn btn-secondary">Calcular de Nuevo</button>
+        </form>
+    </div>
+    
+  </div>
+
+</div>
+
+
+
+{%endblock%}
