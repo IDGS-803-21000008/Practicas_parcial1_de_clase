@@ -1,5 +1,6 @@
 from flask import Flask, render_template, request, redirect
-
+import forms
+import math
 app = Flask(__name__)
 
 @app.route("/formulario1")
@@ -75,6 +76,24 @@ def cinepolis():
                            cantidadBoletos = "",
                            cantidadCompradores = "",
                            tarjeta = "")
+
+@app.route("/distancia",methods=["GET","POST"])
+def calcularDistancia():
+    dist_form = forms.distancia(request.form)
+    resultado = 0.0
+    if request.method == "POST":
+        
+        x1 = dist_form.x1.data
+        x2 = dist_form.x2.data
+        y1 = dist_form.y1.data
+        y2 = dist_form.y2.data
+        resultado1 = math.pow((x2-x1),2)
+        resultado2 = math.pow((y2-y1),2)
+        resultado = math.sqrt(resultado1 + resultado2)
+        print(resultado)
+        
+    
+    return render_template("distancia.html", form = dist_form, resultado = resultado )
 
 
 if __name__ == "__main__":

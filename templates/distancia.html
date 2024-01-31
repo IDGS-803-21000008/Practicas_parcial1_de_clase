@@ -1,0 +1,17 @@
+{%extends 'layout.html'%}
+
+{%block content%}
+{% import "_macros.html" as macros %}
+<h1>Alumnos</h1>
+
+<form action="" method="post">
+{{macros.render_field(form.x1)}}
+{{macros.render_field(form.x2)}}
+{{macros.render_field(form.y1)}}
+{{macros.render_field(form.y2)}}
+<input type="submit" name="btn1" value="calcular">
+</form>
+
+<h1>Resultado: {{resultado}}</h1>
+
+{%endblock%}
