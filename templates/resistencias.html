@@ -1,0 +1,70 @@
+{%extends 'layoutRes.html'%}
+
+{%block content%}
+{% import "_macros.html" as macros %}
+<div class="row d-flex justify-content-center" style="margin: 20px;">
+    <form class="d-flex" action="/resistencia" method="POST">
+    <div class="col-md-3 mt-3" style="background-color: white;">
+        
+        
+
+            {{macros.render_field(form.primeraBanda)}}
+    </div>
+    <div class="col-md-3 mt-3" style="background-color: white;">
+        
+            
+            {{macros.render_field(form.segundaBanda)}}
+    </div>
+    <div class="col-md-3 mt-3" style="background-color: white;">
+        
+        
+            
+            {{macros.render_field(form.terceraBanda)}}
+              
+    </div>
+
+    <div class="col-md-3 mt-3" style="background-color: white;">
+        <h3>Tolerancia</h3>
+        <div class="form-group">
+            <input type="radio" required name="tolerancia" value="oro">  Oro<br>
+            <input type="radio" required name="tolerancia" value="plata">  Plata<br>
+          </div>
+    </div>
+    
+  </div>
+  <div class="row d-flex justify-content-center" style="margin: 20px;">
+    <button type="submit" class="btn btn-secondary">Registrar</button>
+  </div>
+</form>
+</div>
+<div class="row d-flex justify-content-center" style="margin: 20px;">
+    <table class="table table-responsive-sm table-bordered table-hover">
+        <thead class="thead-dark">
+            <tr>
+                <th>Color1</th>
+                <th>Color2</th>
+                <th>Color3</th>
+                <th>Tolerancia</th>
+                <th>Valor</th>
+                <th>ValorMaximo</th>
+                <th>ValorMinimo</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td style="background-color: {{color}};">{{form.primeraBanda.data}}</td>
+                <td style="background-color: {{color2}};">{{form.segundaBanda.data}}</td>
+                <td style="background-color: {{color3}};">{{form.terceraBanda.data}}</td>
+                <td style="background-color: {{colTol}};">{{form.tolerancia.data}}</td>
+                <td>{{valor}}</td>
+                <td>{{valorMaximo}}</td>
+                <td>{{valorMinimo}}</td>
+            </tr>
+            <!-- Agrega más filas según sea necesario -->
+        </tbody>
+    </table>
+</div>
+
+
+
+{%endblock%}
