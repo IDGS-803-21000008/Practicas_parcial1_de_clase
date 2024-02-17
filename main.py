@@ -2,7 +2,19 @@ from flask import Flask, render_template, request, redirect
 import forms
 import math
 import resistencias
+from io import open
+import diccionarioForm
 app = Flask(__name__)
+
+@app.route("/homeInsertarPalabra", methods=["GET", "POST"])
+def homeInsertar():
+    dicc_form = diccionarioForm.Traductor(request.form)
+    return render_template('diccionarIngEsp.html', form=dicc_form, mensaje="")
+
+@app.route("/homeBuscarPalabra", methods=["GET", "POST"])
+def homeBuscar():
+    dicc_form = diccionarioForm.buscar(request.form)
+    return render_template('leerDiccionario.html', form=dicc_form, palabraEncontrada="")
 
 @app.route("/formulario1")
 def formulario1():
@@ -265,6 +277,60 @@ def calcularResistencia():
         
         return render_template("resistencias.html", form= res_form, valorMaximo = valorMaximo, valor = resultado, valorMinimo = valorMinimo,color= color, color2 = color2, color3= color3, colTol = colTol)
 
+
+
+@app.route("/diccionario", methods=["GET", "POST"])
+def traducir():
+    dicc_form = diccionarioForm.Traductor(request.form)
+    mensaje = ""  
+
+    if request.method == "POST" and dicc_form.validate():
+        palabraIngles = dicc_form.ingles.data
+        palabraIngles = palabraIngles.lower()
+        palabraEspaniol = dicc_form.espaniol.data
+        palabraEspaniol = palabraEspaniol.lower()
+        
+        with open('diccionario.txt', "a") as archivo_texto:
+            archivo_texto.write(f'{palabraIngles}:{palabraEspaniol}\n')
+        
+        mensaje = "Palabra guardada con éxito"
+    else:
+        mensaje = "ocurrio un error"
+        print(dicc_form.errors)
+    return render_template('diccionarIngEsp.html', form=dicc_form, mensaje=mensaje)
+
+
+@app.route("/diccionarioLeer", methods=["GET", "POST"])
+def leerPalabras():
+    dicc_form = diccionarioForm.buscar(request.form)
+    palabraEncontrada = ""
+
+
+    if request.method == "POST" and dicc_form.validate():
+        campoABuscar = dicc_form.campoABuscar.data
+        campoABuscar = campoABuscar.lower()
+        idiomaSelec = dicc_form.radioIdioma.data
+        with open('diccionario.txt', "r") as archivo_texto:
+            texto = archivo_texto.readlines()
+            encontrado = False
+
+            for linea in texto:
+                partes = linea.strip().split(':')
+                if idiomaSelec == "ingles":
+                    if campoABuscar == partes[0]:
+                        palabraEncontrada = f'La palabra encontrada es: {partes[1]}'  
+                        encontrado = True
+                        break
+                elif idiomaSelec == "espaniol":
+                    if campoABuscar == partes[1]:
+                        palabraEncontrada = f'La palabra encontrada es: {partes[0]}' 
+                        encontrado = True
+                        break
+
+            if not encontrado:
+                palabraEncontrada = "No se pudo encontrar la palabra o está en el idioma incorrecto"
+                
+    return render_template('leerDiccionario.html', form=dicc_form, palabraEncontrada=palabraEncontrada)
 
 if __name__ == "__main__":
     app.run(debug=True)

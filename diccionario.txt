@@ -1,0 +1,8 @@
+orange:naranja
+carrot:zanahoria
+computer:computadora
+turtle:tortuga
+understand:entender
+like:gustar
+mouse:raton
+penguin:pinguino

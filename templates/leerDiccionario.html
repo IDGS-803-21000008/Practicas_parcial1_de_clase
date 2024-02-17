@@ -1,0 +1,25 @@
+{% extends 'layout.html' %}
+
+{% block content %}
+{% import "_macros.html" as macros %}
+<div class="row d-flex justify-content-center">
+
+    <!-- Formulario para buscar palabras -->
+    <form class="justify-content-center" action="/diccionarioLeer" method="POST" novalidate>
+        <div class="col-md-3 mt-3" style="background-color: white;">
+            <h4>Campo a Buscar&nbsp;</h4>
+            {{ macros.render_field(form.campoABuscar) }}
+        </div>
+        <div class="col-md-3 mt-3" style="background-color: white;">
+            <h4>Seleccionar idioma&nbsp;</h4>
+            {{ macros.render_field(form.radioIdioma) }}
+        </div>
+        <div class="col-md-3 mt-3" style="background-color: white;">
+            <button type="submit" class="btn btn-secondary">Buscar Palabra</button>
+        </div>
+    </form>
+
+    <!-- Resultado de la búsqueda de palabras -->
+    <label for="">{{ palabraEncontrada }}</label>
+</div>
+{% endblock %}
